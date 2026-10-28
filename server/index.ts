@@ -286,6 +286,7 @@ async function bootstrap() {
     throw new Error('ADMIN_USERNAME must be 3-64 letters, numbers, dots, underscores, or hyphens.');
   }
 
+  await pool.query('CREATE EXTENSION IF NOT EXISTS pgcrypto;');
   const schemaPath = fileURLToPath(new URL('../server/schema.sql', import.meta.url));
   await pool.query(await readFile(schemaPath, 'utf8'));
   await pool.query('DELETE FROM auth_sessions WHERE expires_at <= NOW()');
